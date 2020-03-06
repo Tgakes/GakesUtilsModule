@@ -126,7 +126,7 @@ public class RsaUtils {
     public static String decrypt(String content, String private_key, String input_charset) throws Exception {
         PrivateKey prikey = getPrivateKey(private_key);
 
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        Cipher cipher = Cipher.getInstance(ECB_PKCS1_PADDING);
         cipher.init(Cipher.DECRYPT_MODE, prikey);
 
         InputStream ins = new ByteArrayInputStream(Base64Utils.decode(content));
@@ -213,6 +213,43 @@ public class RsaUtils {
             return null;
         }
     }
+
+
+
+
+
+    /** *//**
+     * RSA最大解密密文大小
+     */
+    private static final int MAX_DECRYPT_BLOCK = 128;
+    /**
+     * RSA算法
+     */
+    public static final String RSA = "RSA";
+
+    public static final String ECB_PKCS1_PADDING = "RSA/ECB/PKCS1Padding";
+
+
+    /**
+     * 先base64解码，再RSA公钥解密
+     * content 要解密的字符串
+     * */
+    public static String decryptByPublicKey(String data,String publicKey) {
+        try {
+            Cipher cipher = Cipher.getInstance(ECB_PKCS1_PADDING);
+            PublicKey pubKey = getPublicKeyFromX509(publicKey);
+            cipher.init(Cipher.DECRYPT_MODE, pubKey);
+            byte[] plaintext = cipher.doFinal(Base64Utils.decode(data));
+            return new String(plaintext);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+
+
+
 
 
 
