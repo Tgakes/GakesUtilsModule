@@ -64,18 +64,18 @@ public class FileUtils {
      * @Title: getSaveFilePath
      * @Description:
      */
-    public static String getSaveFilePath(int saveType, Activity activity) {
+    public static String getSaveFilePath(int saveType, Context context) {
 
         String filePath = null;
         switch (saveType) {
             case PrivateConstant.FileInfo.TYPE_APP:
-                filePath = getRootFilePath(activity) + PrivateConstant.FileInfo.SAVE_APP_PATH;
+                filePath = getRootFilePath(context) + PrivateConstant.FileInfo.SAVE_APP_PATH;
                 break;
             case PrivateConstant.FileInfo.TYPE_AUDIO_RECORD:
-                filePath = getRootFilePath(activity) + PrivateConstant.FileInfo.SAVE_AUDIO_RECORD_PATH;
+                filePath = getRootFilePath(context) + PrivateConstant.FileInfo.SAVE_AUDIO_RECORD_PATH;
                 break;
             case PrivateConstant.FileInfo.TYPE_PHOTO:
-                filePath = getRootFilePath(activity) + PrivateConstant.FileInfo.SAVE_PHOTO_PATH;
+                filePath = getRootFilePath(context) + PrivateConstant.FileInfo.SAVE_PHOTO_PATH;
                 break;
             default:
 //                    LogUtils.e("保存的文件类型出错");
@@ -128,14 +128,24 @@ public class FileUtils {
      * @return 如果有sdcard 则返回sdcard根路径，
      * 如果没有则返回应用包下file目录/data/data/包名/file/
      */
-    public static String getRootFilePath(Activity activity) {
-        String strPathHead;
+    public static String getRootFilePath(Context context) {
+
+        String filePath;
         if (isCanUseSD()) {
-            strPathHead = Environment.getExternalStorageDirectory().toString() + File.separator;
+            int api = Build.VERSION.SDK_INT;
+            if (api < 17) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            } else {
+                filePath = "/sdcard";
+            }
         } else {
-            strPathHead = activity.getFilesDir().getPath() + File.separator;
+            filePath = context.getFilesDir().getAbsolutePath();
         }
-        return strPathHead;
+        if (!filePath.endsWith("/")) {
+            filePath += "/";
+        }
+
+        return filePath;
     }
 
     public static boolean isCanUseSD() {
@@ -847,4 +857,11 @@ public class FileUtils {
         }
         return appCacheDir;
     }
+
+
+    public static String getUrlFileName(String url) {
+        int index = url.lastIndexOf("/");
+        return url.substring(index + 1);
+    }
+
 }
