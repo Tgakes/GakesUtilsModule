@@ -77,6 +77,9 @@ public class FileUtils {
             case PrivateConstant.FileInfo.TYPE_PHOTO:
                 filePath = getRootFilePath(context) + PrivateConstant.FileInfo.SAVE_PHOTO_PATH;
                 break;
+            case PrivateConstant.FileInfo.TYPE_VIDEO:
+                filePath = getRootFilePath(context) + PrivateConstant.FileInfo.SAVE_VIDEO_PATH;
+                break;
             default:
 //                    LogUtils.e("保存的文件类型出错");
                 break;

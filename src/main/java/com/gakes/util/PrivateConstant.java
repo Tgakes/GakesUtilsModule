@@ -34,6 +34,10 @@ public class PrivateConstant {
          */
         public static final int TYPE_PHOTO = 3;
 
+        /**
+         * 视频
+         */
+        public static final int TYPE_VIDEO = 4;
 
         /**
          * 应用文件保存路径
@@ -48,6 +52,11 @@ public class PrivateConstant {
          * 图片保存路径
          */
         public static final String SAVE_PHOTO_PATH = BASE_FILE_PATH + "photo" + File.separator;
+
+        /**
+         * 视频位置
+         */
+        public static final String SAVE_VIDEO_PATH = BASE_FILE_PATH + "video" + File.separator;
 
 
     }
