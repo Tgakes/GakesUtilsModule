@@ -12,7 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -22,6 +26,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.clarence.utillibrary.R;
 
 import java.lang.reflect.Field;
 
@@ -54,7 +60,7 @@ public final class ToastUtils {
     }
 
     public static void initToast(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         setGravity(Gravity.CENTER, 0, 0);//设置土司在中间显示
     }
 
@@ -112,14 +118,41 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showShort(final CharSequence text) {
-        if (TextUtils.isEmpty(text)) {
+    public static void showShort(final String text) {
+
+        showToast(text, Toast.LENGTH_SHORT);
+//        Toast.makeText(mContext,text,Toast.LENGTH_SHORT).show();
+    }
+
+    private static void showToast(String massage, int duration) {
+        if (StringUtils.isEmpty(massage)) {
             return;
         }
-//        sBgColor = StreamUtils.getInstance().resourceToColor(R.color.black_t, mContext);
-//        sMsgColor = StreamUtils.getInstance().resourceToColor(R.color.white_a, mContext);
-//        show(text, Toast.LENGTH_SHORT);
-        Toast.makeText(mContext,text,Toast.LENGTH_SHORT).show();
+
+
+        // 设置显示文字的颜色
+        SpannableString spannableString = new SpannableString(massage);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(StreamUtils.getInstance().resourceToColor(R.color.white_a, mContext));
+        spannableString.setSpan(colorSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (sToast == null) {
+            sToast = Toast.makeText(mContext, spannableString, duration);
+        } else {
+//            sToast.setText(spannableString);
+            sToast.setDuration(duration);
+        }
+        // 设置显示的背景
+
+
+
+
+        // 设置Toast要显示的位置，水平居中并在底部，X轴偏移0个单位，Y轴偏移200个单位，
+        sToast.setGravity(Gravity.CENTER, 0, 0);//设置土司在中间显示
+
+        View toastRoot = View.inflate(mContext, R.layout.toast_layout, null);;
+        sToast.setView(toastRoot);
+        TextView tv = toastRoot.findViewById(R.id.tvMsg);
+        tv.setText(spannableString);
+        sToast.show();
     }
 
     /**
@@ -164,8 +197,8 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showLong(final CharSequence text) {
-        show(text, Toast.LENGTH_LONG);
+    public static void showLong(final String text) {
+        showToast(text, Toast.LENGTH_LONG);
     }
 
     /**

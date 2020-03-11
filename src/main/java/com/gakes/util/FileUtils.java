@@ -133,22 +133,13 @@ public class FileUtils {
      */
     public static String getRootFilePath(Context context) {
 
-        String filePath;
+        String strPathHead;
         if (isCanUseSD()) {
-            int api = Build.VERSION.SDK_INT;
-            if (api < 17) {
-                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            } else {
-                filePath = "/sdcard";
-            }
+            strPathHead = Environment.getExternalStorageDirectory().toString() + File.separator;
         } else {
-            filePath = context.getFilesDir().getAbsolutePath();
+            strPathHead = context.getFilesDir().getPath() + File.separator;
         }
-        if (!filePath.endsWith("/")) {
-            filePath += "/";
-        }
-
-        return filePath;
+        return strPathHead;
     }
 
     public static boolean isCanUseSD() {

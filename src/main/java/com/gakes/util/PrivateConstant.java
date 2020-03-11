@@ -12,7 +12,7 @@ public class PrivateConstant {
         /**
          * 文件根路径
          */
-        public static final String BASE_FILE_PATH = "komutr_client" + File.separator;
+        public static final String BASE_FILE_PATH = "doushi" + File.separator;
 
         // 文件类型
         /**
