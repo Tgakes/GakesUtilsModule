@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -31,10 +32,12 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -1043,6 +1046,41 @@ public class CommonUtils {
 
 
 
+    /**监听软键盘状态
+     * @param decorView
+     * @param listener
+     */
+    public static void addOnSoftKeyBoardVisibleListener(final View decorView, final OnSoftKeyBoardVisibleListener listener) {
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                decorView.getWindowVisibleDisplayFrame(rect);
+                int displayHeight = rect.bottom - rect.top;
+                int height = decorView.getHeight();
+                boolean visible = (double) displayHeight / height < 0.8;
+
+//                Log.d(TAG, "DecorView display height = " + displayHeight);
+//                Log.d(TAG, "DecorView height = " + height);
+//                Log.d(TAG, "softkeyboard visible = " + visible);
+
+                if(listener != null){
+                    listener.onSoftKeyBoardVisible(visible);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+    }
+
+
+    public interface OnSoftKeyBoardVisibleListener{
+
+        void onSoftKeyBoardVisible(boolean visible);
+    }
 
 
 
