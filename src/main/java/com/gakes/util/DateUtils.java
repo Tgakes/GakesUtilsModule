@@ -139,12 +139,14 @@ public class DateUtils {
      * @Description 时间戳转换成日期字符窜
      * @date 2015/11/30
      */
-    public static String getDateToString(long time, int parameters) {
+    public static String getDateToString(Long time, int parameters) {
 
-        SimpleDateFormat formatter = getSimpleDate(parameters);
-        if (formatter != null) {
-            Date date = new Date(time);
-            return formatter.format(date);
+        if(time != null){
+            SimpleDateFormat formatter = getSimpleDate(parameters);
+            if (formatter != null) {
+                Date date = new Date(time);
+                return formatter.format(date);
+            }
         }
         return "";
 

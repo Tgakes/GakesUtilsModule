@@ -134,16 +134,15 @@ public final class ToastUtils {
         SpannableString spannableString = new SpannableString(massage);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(StreamUtils.getInstance().resourceToColor(R.color.white_a, mContext));
         spannableString.setSpan(colorSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (sToast == null) {
+        Toast sToast = Toast.makeText(mContext, spannableString, duration);
+       /* if (sToast == null) {
             sToast = Toast.makeText(mContext, spannableString, duration);
         } else {
-//            sToast.setText(spannableString);
             sToast.setDuration(duration);
-        }
+        }*/
         // 设置显示的背景
 
-
-
+        sToast.setDuration(duration);
 
         // 设置Toast要显示的位置，水平居中并在底部，X轴偏移0个单位，Y轴偏移200个单位，
         sToast.setGravity(Gravity.CENTER, 0, 0);//设置土司在中间显示

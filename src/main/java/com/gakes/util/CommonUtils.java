@@ -32,6 +32,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
@@ -706,7 +707,7 @@ public class CommonUtils {
      * @param strokeColor   边框颜色
      * @return
      */
-    public static GradientDrawable getGraDrawable(int strokeWidthPx, int strokeHeightPx,int radius,int strokeColor) {
+    public static GradientDrawable getGraDrawable(int strokeWidthPx, int strokeHeightPx, int radius, int strokeColor) {
 
         GradientDrawable gd = new GradientDrawable();//创建drawable
         gd.setShape(GradientDrawable.RECTANGLE);
@@ -1045,8 +1046,9 @@ public class CommonUtils {
     }
 
 
-
-    /**监听软键盘状态
+    /**
+     * 监听软键盘状态
+     *
      * @param decorView
      * @param listener
      */
@@ -1066,7 +1068,7 @@ public class CommonUtils {
 //                Log.d(TAG, "DecorView height = " + height);
 //                Log.d(TAG, "softkeyboard visible = " + visible);
 
-                if(listener != null){
+                if (listener != null) {
                     listener.onSoftKeyBoardVisible(visible);
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1077,12 +1079,32 @@ public class CommonUtils {
     }
 
 
-    public interface OnSoftKeyBoardVisibleListener{
+    public interface OnSoftKeyBoardVisibleListener {
 
         void onSoftKeyBoardVisible(boolean visible);
     }
 
 
+    /**
+     * 判断服务是否开启
+     *
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (TextUtils.isEmpty(ServiceName)) {
+            return false;
+        }
+        ActivityManager myManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager.getRunningServices(30);
+        int serviceSize = runningService.size();
+        for (int i = 0; i < serviceSize; i++) {
+            Log.i("logs", "" + runningService.get(i).service.getClassName());
+            if (runningService.get(i).service.getClassName().equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
