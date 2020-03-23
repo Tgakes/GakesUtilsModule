@@ -7,12 +7,13 @@ public class PrivateConstant {
 
 
     // 文件信息
-    public static final class FileInfo {
+    public static class FileInfo {
+
 
         /**
          * 文件根路径
          */
-        public static  String BASE_FILE_PATH = "doushi" + File.separator;
+        public static String BASE_FILE_PATH = "dev" + File.separator;
 
         // 文件类型
         /**
