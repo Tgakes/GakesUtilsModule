@@ -31,6 +31,11 @@ public class PackageUtils {
         return getPackageInfo(context).versionName;
     }
 
+    public static int getVersionCode(Context context) {
+
+        return getPackageInfo(context).versionCode;
+    }
+
     /**
      * 判断手机是否安装某个应用
      *
