@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -17,6 +18,7 @@ public class PackageUtils {
     public static final String WX = "com.tencent.mm";
     public static final String SINA = "com.sina.weibo";
 
+
     public static PackageInfo getPackageInfo(Context context) {
         PackageManager pm = context.getPackageManager();
         try {
@@ -25,6 +27,17 @@ public class PackageUtils {
             e.printStackTrace();
         }
         return new PackageInfo();
+    }
+
+    public static String getMetaDataString(String key, Context context) {
+        String res = null;
+        try {
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            res = appInfo.metaData.getString(key);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public static String getVersionName(Context context) {
@@ -58,6 +71,7 @@ public class PackageUtils {
             return false;
         }
     }
+
     public static void fixInputMethodManagerLeak(Context destContext) {
         if (destContext == null) {
             return;
